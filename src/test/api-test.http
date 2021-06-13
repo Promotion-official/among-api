@@ -1,0 +1,11 @@
+
+###Standard output upon test success
+// {
+//   "email": "test.gmailemail"
+// }
+POST http://localhost:8081/account/get-account
+Content-Type: application/json
+
+{
+  "email" : "test.gmail"
+}

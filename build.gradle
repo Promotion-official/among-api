@@ -19,13 +19,28 @@ repositories {
 }
 
 dependencies {
+    /*
+    스프링 의존성 추가
+     */
+    compileOnly "org.springframework.boot:spring-boot-starter-jdbc"
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compileOnly "mysql:mysql-connector-java:8.0.15"
+
+
+    /*
+    개발의 유틸성 향상을 위한 3rd 파티 추가 (lombok, lorem ipsum 등)
+    */
+    implementation 'org.projectlombok:lombok:1.18.16'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    // https://mvnrepository.com/artifact/de.sven-jacobs/loremipsum
+    testImplementation group: 'de.sven-jacobs', name: 'loremipsum', version: '1.0'
 }
 
 test {

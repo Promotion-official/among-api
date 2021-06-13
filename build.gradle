@@ -41,6 +41,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     // https://mvnrepository.com/artifact/de.sven-jacobs/loremipsum
     testImplementation group: 'de.sven-jacobs', name: 'loremipsum', version: '1.0'
+    // https://mvnrepository.com/artifact/com.thedeanda/lorem
+    implementation group: 'com.thedeanda', name: 'lorem', version: '2.1'
 }
 
 test {

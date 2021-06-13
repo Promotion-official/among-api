@@ -6,18 +6,13 @@ import org.springframework.stereotype.Service;
 
 @Service @Component
 public class AccountService {
+    private AccountDto dto;
 
-    public void addUser(AccountDto testDto) {
-
+    public void addAccount(AccountDto testDto) {
+        dto = testDto;
     }
 
-    public AccountDto getUser(String email) {
-        return AccountDto.builder()
-                .name("지인호")
-                .email("xylopeofficial@gmail.com")
-                .generation(4)
-                .clazz(2)
-                .number(18)
-                .build();
+    public AccountDto getAccount(String email) {
+        return dto;
     }
 }

@@ -2,37 +2,48 @@ package com.promotion.amongapi.controller;
 
 import com.promotion.amongapi.dto.AccountDto;
 import com.promotion.amongapi.service.AccountService;
+import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
 public class AccountServiceTest {
-    AccountService service;
-    AccountDto testDto;
+    private static AccountService service;
+    private static AccountDto testDto;
+    private static LoremIpsum loremIpsum;
 
-    @BeforeEach
-    public void init() {
+    @BeforeAll
+    public static void init() {
+        Random random = new Random();
+
         service = new AccountService();
-
+        loremIpsum = LoremIpsum.getInstance();
         testDto = AccountDto.builder()
-                .name("지인호")
-                .email("xylopeofficial@gmail.com")
-                .generation(4)
-                .clazz(2)
-                .number(18)
+                .name(loremIpsum.getName())
+                .email(loremIpsum.getEmail())
+                .generation(random.nextInt(100))
+                .clazz(random.nextInt(4))
+                .number(random.nextInt(20))
                 .build();
     }
 
     @Test
     public void testAddAccount() {
-        service.addUser(testDto);
-        AccountDto result = service.getUser(testDto.getEmail());
+        service.addAccount(testDto);
+        AccountDto result = service.getAccount(testDto.getEmail());
         assertEquals(testDto, result); //TODO 테스트 데이터를 난수화 하여 테스트 의 신뢰성 증명 | 2021.06.13
+
+        //Logging test
+        log.info("AccountServiceTest - testAddAccount");
+        log.info("added user : " + testDto);
+        log.info("result : " + result);
     }
 }

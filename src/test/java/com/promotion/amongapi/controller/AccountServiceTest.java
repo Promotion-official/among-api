@@ -9,7 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 public class AccountServiceTest {
     private static AccountService service;
-    private static AccountDto testDto;
+    private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
 
     @BeforeAll
@@ -26,24 +30,29 @@ public class AccountServiceTest {
 
         service = new AccountService();
         loremIpsum = LoremIpsum.getInstance();
-        testDto = AccountDto.builder()
+        testDtos = new ArrayList<>();
+
+        testDtos = Stream.generate(() -> AccountDto.builder()
                 .name(loremIpsum.getName())
                 .email(loremIpsum.getEmail())
                 .generation(random.nextInt(100))
                 .clazz(random.nextInt(4))
                 .number(random.nextInt(20))
-                .build();
+                .build()).limit(10).collect(Collectors.toList());
     }
 
     @Test
     public void testAddAccount() {
-        service.addAccount(testDto);
-        AccountDto result = service.getAccount(testDto.getEmail());
-        assertEquals(testDto, result); //TODO 테스트 데이터를 난수화 하여 테스트 의 신뢰성 증명 | 2021.06.13
+        //Setting test environment
+        testDtos.forEach(service::addAccount);
+
+        int idxOfTestDto = 0;
+        AccountDto result = service.getAccount(testDtos.get(idxOfTestDto).getEmail());
+        assertEquals(testDtos.get(0), result);
 
         //Logging test
         log.info("AccountServiceTest - testAddAccount");
-        log.info("added user : " + testDto);
+        log.info("added user : " + testDtos);
         log.info("result : " + result);
     }
 }

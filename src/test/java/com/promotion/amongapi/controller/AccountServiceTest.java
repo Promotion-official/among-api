@@ -46,9 +46,9 @@ public class AccountServiceTest {
         //Setting test environment
         testDtos.forEach(service::addAccount);
 
-        int idxOfTestDto = 0;
+        int idxOfTestDto = new Random().nextInt(10);
         AccountDto result = service.getAccount(testDtos.get(idxOfTestDto).getEmail());
-        assertEquals(testDtos.get(0), result);
+        assertEquals(testDtos.get(idxOfTestDto), result);
 
         //Logging test
         log.info("AccountServiceTest - testAddAccount");

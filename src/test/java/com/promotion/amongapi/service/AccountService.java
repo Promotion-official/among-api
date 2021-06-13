@@ -4,18 +4,29 @@ import com.promotion.amongapi.dto.AccountDto;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service @Component
 public class AccountService {
-    private AccountDto dto;
+    private final List<AccountDto> accountList;
 
-    public void addAccount(AccountDto testDto) {
-        Optional.ofNullable(dto)
-                .ifPresentOrElse(dto->{}, ()->dto = testDto);
+    public AccountService() {
+        accountList = new ArrayList<>();
+    }
+
+    public void addAccount(AccountDto account) {
+        accountList.add(account);
     }
 
     public AccountDto getAccount(String email) {
-        return dto;
+        AtomicReference<AccountDto> dto = new AtomicReference<>();
+        accountList.forEach(account -> {
+            if(account.getEmail().equals(email))
+                dto.set(account);
+        });
+
+        return dto.get();
     }
 }

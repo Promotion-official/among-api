@@ -1,7 +1,7 @@
-package com.promotion.amongapi.controller;
+package com.promotion.amongapi.service;
 
 import com.promotion.amongapi.dto.AccountDto;
-import com.promotion.amongapi.service.AccountService;
+import com.promotion.amongapi.repository.AccountRepository;
 import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,10 +16,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
 public class AccountServiceTest {
+    private static AccountRepository repository;
     private static AccountService service;
     private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
@@ -28,7 +30,9 @@ public class AccountServiceTest {
     public static void init() {
         Random random = new Random();
 
-        service = new AccountService();
+        repository = mock(AccountRepository.class);
+
+        service = new AccountService(repository);
         loremIpsum = LoremIpsum.getInstance();
         testDtos = new ArrayList<>();
 
@@ -42,17 +46,30 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testAddAccount() {
+    public void testAdd() {
         //Setting test environment
-        testDtos.forEach(service::addAccount);
+        int idxOfAddDto = new Random().nextInt(10);
+        service.add(testDtos.get(idxOfAddDto));
 
-        int idxOfTestDto = new Random().nextInt(10);
-        AccountDto result = service.getAccount(testDtos.get(idxOfTestDto).getEmail());
-        assertEquals(testDtos.get(idxOfTestDto), result);
+        //Check AccountService delegated the addAccount logic to AccountRepository
+        verify(repository, times(1)).save(testDtos.get(idxOfAddDto));
 
         //Logging test
-        log.info("AccountServiceTest - testAddAccount");
-        log.info("added user : " + testDtos);
-        log.info("result : " + result);
+        log.info("AccountServiceTest - testAdd");
+        log.info("added user : " + testDtos.get(idxOfAddDto));
+    }
+
+    @Test
+    public void testGet() {
+        //Setting test environment
+        int idxOfGetDto = new Random().nextInt(10);
+        AccountDto getDto = testDtos.get(idxOfGetDto);
+        String email = getDto.getEmail();
+        when(repository.getAccountDtoByEmail(anyString())).thenReturn(getDto);
+
+        //Check return of get
+        assertEquals(service.get(email), getDto);
+        //Check AccountService delegated the getAccount logic to AccountRepository
+        verify(repository).getAccountDtoByEmail(email);
     }
 }

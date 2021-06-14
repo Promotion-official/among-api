@@ -1,6 +1,7 @@
 package com.promotion.amongapi.service;
 
 import com.promotion.amongapi.dto.AccountDto;
+import com.promotion.amongapi.repository.AccountRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +12,18 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service @Component
 public class AccountService {
     private final List<AccountDto> accountList;
+    private final AccountRepository repository;
 
-    public AccountService() {
+    public AccountService(AccountRepository repository) {
         accountList = new ArrayList<>();
+        this.repository = repository;
     }
 
-    public void addAccount(AccountDto account) {
-        accountList.add(account);
+    public void add(AccountDto account) {
+        repository.save(account);
     }
 
-    public AccountDto getAccount(String email) {
-        AtomicReference<AccountDto> dto = new AtomicReference<>();
-        accountList.forEach(account -> {
-            if(account.getEmail().equals(email))
-                dto.set(account);
-        });
-
-        return dto.get();
+    public AccountDto get(String email) {
+        return repository.getAccountDtoByEmail(email);
     }
 }

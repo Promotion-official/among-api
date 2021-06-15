@@ -1,4 +1,4 @@
-package com.promotion.amongapi.dto;
+package com.promotion.amongapi.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -14,9 +14,9 @@ import javax.validation.constraints.NotBlank;
 @Getter @Setter
 @ToString
 public class AccountDto {
-    private String name;
     @NotBlank
     private final String email;
+    private String name;
     private int clazz;
     private int number;
     private int generation;

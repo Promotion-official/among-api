@@ -1,6 +1,7 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.dto.AccountDto;
+import com.promotion.amongapi.domain.converter.AccountConverter;
+import com.promotion.amongapi.domain.dto.AccountDto;
 import com.promotion.amongapi.exception.UnknownStrategyException;
 import com.promotion.amongapi.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
@@ -30,16 +31,17 @@ public class AccountServiceTest {
     private static AccountService service;
     private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
+    private static AccountConverter converter;
 
     @BeforeAll
     public static void init() {
         Random random = new Random();
 
         repository = mock(AccountRepository.class);
-
-        service = new AccountService(repository);
-        loremIpsum = LoremIpsum.getInstance();
+        service = new AccountService(repository, new AccountConverter());
+        converter = new AccountConverter();
         testDtos = new ArrayList<>();
+        loremIpsum = LoremIpsum.getInstance();
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR); //to calculate max generation
         testDtos = Stream.generate(() -> AccountDto.builder()
@@ -58,10 +60,25 @@ public class AccountServiceTest {
         service.add(testDtos.get(idxOfAddDto));
 
         //Check AccountService delegated the addAccount logic to AccountRepository
-        verify(repository, times(1)).save(testDtos.get(idxOfAddDto));
+        verify(repository, times(1)).save(converter.convertDtoToEntity(testDtos.get(idxOfAddDto)));
 
         //Logging test
         log.info("AccountServiceTest - testAdd");
+        log.info("added user : " + testDtos.get(idxOfAddDto));
+    }
+
+    @Test
+    public void testAddFailure() {
+        //Setting test environment
+        int idxOfAddDto = new Random().nextInt(10);
+        service.add(testDtos.get(idxOfAddDto));
+        when(repository.exists(any())).thenReturn(true);
+
+        //Check AccountService delegated the addAccount logic to AccountRepository
+        verify(repository, times(1)).save(converter.convertDtoToEntity(testDtos.get(idxOfAddDto)));
+
+        //Logging test
+        log.info("AccountServiceTest - testAddFailure");
         log.info("added user : " + testDtos.get(idxOfAddDto));
     }
 
@@ -81,7 +98,6 @@ public class AccountServiceTest {
         //Logging test
         log.info("AccountServiceTest - testGet");
         log.info("getDto : " + getDto);
-
     }
 
     @Test
@@ -181,7 +197,7 @@ public class AccountServiceTest {
 
         //Check method is run correctly
         service.updateStudentId(email, studentId);
-        verify(repository).save(expectedResultDto);
+        verify(repository).save(converter.convertDtoToEntity(expectedResultDto));
 
         log.info("AccountServiceTest - testUpdateStudentId");
         log.info("insert value : " + testDto);

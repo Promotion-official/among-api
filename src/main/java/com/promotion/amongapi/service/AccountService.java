@@ -1,33 +1,27 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.dto.AccountDto;
+import com.promotion.amongapi.domain.dto.AccountDto;
 import com.promotion.amongapi.exception.UnknownStrategyException;
 import com.promotion.amongapi.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
+import com.promotion.amongapi.domain.converter.AccountConverter;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Max;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service @Component
+@Service
+@AllArgsConstructor
 public class AccountService {
-    private final List<AccountDto> accountList;
     private final AccountRepository repository;
-
-    public AccountService(AccountRepository repository) {
-        accountList = new ArrayList<>();
-        this.repository = repository;
-    }
+    private final AccountConverter converter;
 
     public void add(AccountDto account) {
-        repository.save(account);
+        repository.save(converter.convertDtoToEntity(account));
     }
 
     public AccountDto get(String email) {
@@ -42,7 +36,7 @@ public class AccountService {
         dto.setClazz(studentIdData[TranslateArray.CLAZZ.index]);
         dto.setNumber(studentIdData[TranslateArray.NUMBER.index]);
 
-        repository.save(dto);
+        repository.save(converter.convertDtoToEntity(dto));
     }
 
     private int[] translateStudentIdToAccountDto(@Max(9999) int studentId) {

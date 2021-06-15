@@ -1,6 +1,6 @@
 package com.promotion.amongapi.controller;
 
-import com.promotion.amongapi.dto.AccountDto;
+import com.promotion.amongapi.domain.dto.AccountDto;
 import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;

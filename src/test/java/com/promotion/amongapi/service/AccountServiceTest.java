@@ -1,6 +1,9 @@
 package com.promotion.amongapi.service;
 
 import com.promotion.amongapi.dto.AccountDto;
+import com.promotion.amongapi.exception.UnknownStrategyException;
+import com.promotion.amongapi.exception.WrongConditionTypeException;
+import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
 import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @Slf4j
@@ -73,26 +77,83 @@ public class AccountServiceTest {
         assertEquals(service.get(email), getDto);
         //Check AccountService delegated the getAccount logic to AccountRepository
         verify(repository).getAccountDtoByEmail(email);
+
+        //Logging test
+        log.info("AccountServiceTest - testGet");
+        log.info("getDto : " + getDto);
+
     }
 
     @Test
-    public void testCountName() {
-        //TODO 테스트 코드 작성 | 2021-06-14
+    public void testCount() {
+        //Logging test (in code)
+        log.info("AccountServiceTest - testCount");
+        //Setting test environment
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String name = "오병진";
+        int generation = 4;
+        int grade = 2;
+        int clazz = 1;
+
+        int returnValue;
+
+        //Check count by name
+        returnValue = new Random().nextInt(100);
+        when(repository.countByName(name)).thenReturn(returnValue);
+        int nameCount = service.count(AccountCountStrategy.NAME, name);
+
+        assertEquals(nameCount, returnValue);
+        verify(repository, atLeastOnce()).countByName(name);
+
+        log.info("test countByName");
+        log.info("expected return Value : " + returnValue);
+        log.info("real return Value : " + nameCount);
+        //Check count by generation
+        returnValue = new Random().nextInt(100);
+        when(repository.countByGeneration(generation)).thenReturn(returnValue);
+        int genCount = service.count(AccountCountStrategy.GENERATION, generation);
+
+        assertEquals(genCount, returnValue);
+        verify(repository, atLeastOnce()).countByGeneration(generation);
+
+        log.info("test countByGeneration");
+        log.info("expected return Value : " + returnValue);
+        log.info("real return Value : " + genCount);
+        //Check count by grade
+        returnValue = new Random().nextInt(100);
+        when(repository.countByGeneration(currentYear - 2015 - grade)).thenReturn(returnValue);
+        int gradeCount = service.count(AccountCountStrategy.GRADE, grade);
+
+        assertEquals(gradeCount, returnValue);
+        verify(repository, atLeastOnce()).countByGeneration(currentYear - 2015 - grade);
+
+        log.info("test countByGrade");
+        log.info("expected return Value : " + returnValue);
+        log.info("real return Value : " + gradeCount);
+        //Check count by clazz
+        returnValue = new Random().nextInt(100);
+        when(repository.countByClazz(clazz)).thenReturn(returnValue);
+        int clazzCount = service.count(AccountCountStrategy.CLAZZ, clazz);
+
+        assertEquals(clazzCount, returnValue);
+        verify(repository, atLeastOnce()).countByClazz(clazz);
+
+        log.info("test countByClazz");
+        log.info("expected return Value : " + returnValue);
+        log.info("real return Value : " + clazzCount);
     }
 
     @Test
-    public void testCountGeneration() {
-        //TODO 테스트 코드 작성 | 2021-06-14
-    }
+    public void testCountFailure() {
+        Exception e = assertThrows(UnknownStrategyException.class, () -> service.count(null, 1));
+        Exception e2 = assertThrows(WrongConditionTypeException.class, () -> service.count(AccountCountStrategy.GRADE, "condition must be integer"));
 
-    @Test
-    public void testCountGrade() {
-        //TODO 테스트 코드 작성 | 2021-06-14
-    }
-
-    @Test
-    public void testCountClazz() {
-        //TODO 테스트 코드 작성 | 2021-06-14
+        //Logging test
+        log.info("AccoutnServiceTest - testCountFailure");
+        log.info("exception : " + e.getClass().getSimpleName());
+        log.info("message : " + e.getMessage());
+        log.info("exception : " + e2.getClass().getSimpleName());
+        log.info("message : " + e2.getMessage());
     }
 
     @Test

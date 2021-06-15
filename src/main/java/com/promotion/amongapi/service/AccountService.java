@@ -1,9 +1,11 @@
 package com.promotion.amongapi.service;
 
 import com.promotion.amongapi.dto.AccountDto;
+import com.promotion.amongapi.exception.UnknownStrategyException;
+import com.promotion.amongapi.exception.WrongConditionTypeException;
+import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,8 @@ import javax.validation.constraints.Max;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service @Component
 public class AccountService {
@@ -51,6 +54,36 @@ public class AccountService {
         int number = studentId % 100;
 
         return new int[]{gen, grade, clazz, number};
+    }
+
+    public int count(AccountCountStrategy strategy, Object condition) {
+        AtomicInteger count = new AtomicInteger();
+        Optional.ofNullable(strategy).ifPresentOrElse((countStrategy)->{
+            try {
+                switch (countStrategy) {
+                    case NAME:
+                        count.set(repository.countByName((String) condition));
+                        break;
+                    case GENERATION:
+                        count.set(repository.countByGeneration((int) condition));
+                        break;
+                    case GRADE:
+                        int generation = translateStudentIdToAccountDto((int) condition * 1000)[TranslateArray.GEN.index]; //학번 생성 로직을 통해, grade 로 generation 을 구한다.
+                        count.set(repository.countByGeneration(generation));
+                        break;
+                    case CLAZZ:
+                        count.set(repository.countByClazz((int) condition));
+                        break;
+                    default:
+                        throw new UnknownStrategyException();
+                }
+            } catch (ClassCastException e) {
+                throw new WrongConditionTypeException();
+            }
+        }, ()->{
+            throw new UnknownStrategyException();
+        });
+        return count.get();
     }
 
     @AllArgsConstructor

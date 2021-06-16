@@ -12,15 +12,15 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AccountConverterTest {
-    private static AccountConverter converter;
+public class AccountDtoConverterTest {
+    private static AccountDtoConverter converter;
     private static AccountDto dto;
     private static Account entity;
 
 
     @BeforeAll
     public static void init() {
-        converter = new AccountConverter();
+        converter = new AccountDtoConverter();
     }
 
     @BeforeEach

@@ -1,9 +1,10 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.domain.converter.AccountConverter;
+import com.promotion.amongapi.domain.converter.AccountDtoConverter;
 import com.promotion.amongapi.domain.dto.AccountDto;
-import com.promotion.amongapi.exception.UnknownStrategyException;
-import com.promotion.amongapi.exception.WrongConditionTypeException;
+import com.promotion.amongapi.domain.entity.Account;
+import com.promotion.amongapi.advice.exception.UnknownStrategyException;
+import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
 import com.thedeanda.lorem.LoremIpsum;
@@ -31,15 +32,15 @@ public class AccountServiceTest {
     private static AccountService service;
     private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
-    private static AccountConverter converter;
+    private static AccountDtoConverter converter;
 
     @BeforeAll
     public static void init() {
         Random random = new Random();
 
         repository = mock(AccountRepository.class);
-        service = new AccountService(repository, new AccountConverter());
-        converter = new AccountConverter();
+        service = new AccountService(repository);
+        converter = new AccountDtoConverter();
         testDtos = new ArrayList<>();
         loremIpsum = LoremIpsum.getInstance();
 
@@ -86,18 +87,18 @@ public class AccountServiceTest {
     public void testGet() {
         //Setting test environment
         int idxOfGetDto = new Random().nextInt(10);
-        AccountDto getDto = testDtos.get(idxOfGetDto);
-        String email = getDto.getEmail();
-        when(repository.getAccountDtoByEmail(anyString())).thenReturn(getDto);
+        Account getEntity = converter.convertDtoToEntity(testDtos.get(idxOfGetDto));
+        String email = getEntity.getEmail();
+        when(repository.getById(anyString())).thenReturn(getEntity);
 
         //Check return of get
-        assertEquals(service.get(email), getDto);
+        assertEquals(service.get(email), converter.convertEntityToDto(getEntity));
         //Check AccountService delegated the getAccount logic to AccountRepository
-        verify(repository).getAccountDtoByEmail(email);
+        verify(repository).getById(email);
 
         //Logging test
         log.info("AccountServiceTest - testGet");
-        log.info("getDto : " + getDto);
+        log.info("getEntity : " + getEntity);
     }
 
     @Test
@@ -177,8 +178,8 @@ public class AccountServiceTest {
         //Setting test environment
         int studentId = 2218;
         int idxOfGetDto = new Random().nextInt(10);
-        AccountDto testDto = testDtos.get(idxOfGetDto);
-        when(repository.getAccountDtoByEmail(testDto.getEmail())).thenReturn(testDto);
+        Account testDto = converter.convertDtoToEntity(testDtos.get(idxOfGetDto));
+        when(repository.getById(testDto.getEmail())).thenReturn(testDto);
 
         //Predict the results to create a comparison group
         //---->translateStudentIdToAccountDto 의 로직을 수동으로 구현한다

@@ -1,11 +1,27 @@
 
 ###Standard output upon test success
 // {
+//   {
+//  "email": "grassintheglass@gmail.com",
+//  "name": "지인호",
+//  "clazz": 2,
+//  "number": 18,
+//  "generation": 4
+//  }
+POST http://localhost:8081/account/get-account
+Content-Type: application/json
+
+{
+  "email" : "grassintheglass@gmail.com"
+}
+
+###Standard output upon test success
+// {
 //   "email": "test.gmailemail"
 // }
 POST http://localhost:8081/account/get-account
 Content-Type: application/json
 
 {
-  "email" : "test.gmail"
+  "email" : "#unknownmail@gmail.com"
 }

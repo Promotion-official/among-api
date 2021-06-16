@@ -1,12 +1,14 @@
 package com.promotion.amongapi.service;
 
 import com.promotion.amongapi.domain.dto.AccountDto;
-import com.promotion.amongapi.exception.UnknownStrategyException;
-import com.promotion.amongapi.exception.WrongConditionTypeException;
+import com.promotion.amongapi.domain.entity.Account;
+import com.promotion.amongapi.advice.exception.UnknownStrategyException;
+import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
-import com.promotion.amongapi.domain.converter.AccountConverter;
+import com.promotion.amongapi.domain.converter.AccountDtoConverter;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Max;
@@ -15,17 +17,27 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-@AllArgsConstructor
 public class AccountService {
     private final AccountRepository repository;
-    private final AccountConverter converter;
+    private final AccountDtoConverter converter;
+
+    public AccountService(AccountRepository repository) {
+        this.repository = repository;
+        converter = new AccountDtoConverter();
+    }
 
     public void add(AccountDto account) {
         repository.save(converter.convertDtoToEntity(account));
     }
 
     public AccountDto get(String email) {
-        return repository.getAccountDtoByEmail(email);
+        Account entity = new Account();
+        try {
+        entity = repository.getById(email);
+        } catch (DataAccessException e) {
+            System.out.println("테스트 성공 : " + e.getMessage());
+        }
+        return converter.convertEntityToDto(entity);
     }
 
     public void updateStudentId(String email, int studentId) {

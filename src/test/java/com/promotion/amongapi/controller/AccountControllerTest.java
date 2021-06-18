@@ -7,12 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,7 +41,8 @@ public class AccountControllerTest {
 
     @Test
     public void testGetAccount() {
-        //Set request data
+        //Prepare test environment
+        //---->Set request data
         int maxGeneration = Calendar.getInstance().get(Calendar.YEAR);
         AccountDto requestDto = AccountDto.builder()
                 .name(lorem.getName())
@@ -48,19 +53,22 @@ public class AccountControllerTest {
                 .build();
         when(service.get(requestDto.getEmail())).thenReturn(requestDto);
 
-        //Check response data
+        //---->Get response data
         AccountDto responseDto = accountController.getAccount(requestDto).getBody();
-        assertEquals(responseDto, requestDto);
 
         //Logging test
         log.info("AccountControllerTest - testGetAccount");
         log.info("request dto : " + requestDto);
         log.info("response dto : " + responseDto);
+
+        //Check response data
+        assertEquals(responseDto, requestDto);
     }
 
     @Test
     public void testGetAccountFailure() {
-        //Set request data
+        //Prepare test environment
+        //---->Set request data
         int maxGeneration = Calendar.getInstance().get(Calendar.YEAR);
         AccountDto requestDto = AccountDto.builder()
                 .name(lorem.getName())
@@ -69,11 +77,11 @@ public class AccountControllerTest {
                 .clazz(random.nextInt(4) + 1)
                 .number(random.nextInt(20) + 1)
                 .build();
-        when(service.get(requestDto.getEmail())).thenThrow();
+        when(service.get(requestDto.getEmail())).thenThrow(EntityNotFoundException.class);
 
-        //Check response data
-        AccountDto responseDto = accountController.getAccount(requestDto).getBody();
-        assertEquals(responseDto, requestDto);
+        //---->Get response data
+        AtomicReference<AccountDto> responseDto = new AtomicReference<>();
+        assertThrows(EntityNotFoundException.class, () ->responseDto.set(accountController.getAccount(requestDto).getBody()));
 
         //Logging test
         log.info("AccountControllerTest - testGetAccount");

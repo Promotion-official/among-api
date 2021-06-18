@@ -1,6 +1,7 @@
 package com.promotion.amongapi.advice.handler;
 
 import com.promotion.amongapi.advice.ErrorResopnse;
+import com.promotion.amongapi.advice.ErrorStatus;
 import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +30,7 @@ public class EntityNotFoundHandlerTest {
 
         EntityNotFoundException exception = new EntityNotFoundException(message);
         ResponseEntity<ErrorResopnse> expectedResponse =
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResopnse(message, HttpStatus.BAD_REQUEST));
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResopnse(message, ErrorStatus.ENTITY_NOT_FOUND));
         ResponseEntity<ErrorResopnse> response = handler.handleException(exception);
 
         assertEquals(response, expectedResponse);

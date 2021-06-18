@@ -47,13 +47,21 @@ public class AccountDtoConverterTest {
 
     @Test
     public void testConvertDtoToEntity() {
+        //Prepare test environment
+        //---->Convert data
         Account expectedResult = converter.convertDtoToEntity(dto);
+
+        //check convert data
         assertEquals(expectedResult, entity);
     }
 
     @Test
     public void testConvertEntityToDto() {
+        //Prepare test environment
+        //---->Convert data
         AccountDto expectedResult = converter.convertEntityToDto(entity);
+
+        //check convert data
         assertEquals(expectedResult, dto);
     }
 }

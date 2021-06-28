@@ -1,9 +1,6 @@
 package com.promotion.amongapi.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
@@ -11,6 +8,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Max;
 
 @Getter
+@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor

@@ -3,6 +3,7 @@ package com.promotion.amongapi.domain.converter;
 import com.promotion.amongapi.domain.dto.AccountDto;
 import com.promotion.amongapi.domain.entity.Account;
 import com.thedeanda.lorem.LoremIpsum;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 public class AccountDtoConverterTest {
     private static AccountDtoConverter converter;
     private static AccountDto dto;
@@ -53,6 +55,10 @@ public class AccountDtoConverterTest {
 
         //check convert data
         assertEquals(expectedResult, entity);
+
+        //Logging test
+        log.info("entity : " + entity);
+        log.info("expected result : " + expectedResult);
     }
 
     @Test
@@ -63,5 +69,9 @@ public class AccountDtoConverterTest {
 
         //check convert data
         assertEquals(expectedResult, dto);
+
+        //Logging test
+        log.info("dto : " + dto);
+        log.info("expected result : " + expectedResult);
     }
 }

@@ -45,13 +45,17 @@ public class AuthorizeKeyService {
         requestStatus.put(authorizeKey, requestCount);
     }
 
+    public void clear() {
+        requestStatus.clear();
+    }
+
     @ToString
     @AllArgsConstructor
     protected enum RequestLimitPermission {
-        DEVELOPER(Permission.DEVELOPER, 100),
-        PRODUCT(Permission.PRODUCT, 0),
-        OPERATOR(Permission.OPERATOR, 0),
-        ADMINISTRATOR(Permission.ADMINISTRATOR, 0);
+        DEVELOPER(Permission.DEVELOPER, 10),
+        PRODUCT(Permission.PRODUCT, 20),
+        OPERATOR(Permission.OPERATOR, 100),
+        ADMINISTRATOR(Permission.ADMINISTRATOR, 100000);
 
         @Getter
         private final Permission perm;

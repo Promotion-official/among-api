@@ -1,7 +1,9 @@
 package com.promotion.amongapi.service;
 
+import com.promotion.amongapi.advice.exception.AuthorizeKeyNotFoundException;
 import com.promotion.amongapi.advice.exception.PermissionnotMatchException;
 import com.promotion.amongapi.advice.exception.RequestLimitExceededException;
+import com.promotion.amongapi.advice.exception.WrongPermissionIdxException;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.converter.AuthorizeKeyConverter;
 import com.promotion.amongapi.domain.dto.AuthorizeKeyDto;
@@ -9,10 +11,11 @@ import com.promotion.amongapi.domain.entity.AuthorizeKey;
 import com.promotion.amongapi.repository.AuthorizeKeyRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,14 +24,16 @@ import java.util.concurrent.atomic.AtomicReference;
 @AllArgsConstructor
 @Service
 public class AuthorizeKeyService {
-    private AuthorizeKeyRepository repository;
-    private AuthorizeKeyConverter converter;
+    private final AuthorizeKeyRepository repository;
+    private final AuthorizeKeyConverter converter;
     private static final Map<String, Integer> requestStatus = new HashMap<>();
 
+    @Transactional(readOnly = true)
     public void count(String authorizeKey) {
         //Get Datas
         //---->Get authorize key
         AuthorizeKey entity = repository.getById(authorizeKey);
+        entity.getAuthorizeKey();
         AuthorizeKeyDto dto = converter.convertEntityToDto(entity);
         //---->Get request limit
         RequestLimitPermission rlp = RequestLimitPermission.of(dto.getPerm());

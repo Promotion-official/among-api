@@ -8,7 +8,7 @@
 //  "number": 18,
 //  "generation": 4
 //  }
-POST http://localhost:8081/account/get-account
+POST http://localhost:8081/account/get-account?authorize_key=asda
 Content-Type: application/json
 
 {

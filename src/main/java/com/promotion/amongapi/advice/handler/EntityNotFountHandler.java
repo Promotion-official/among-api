@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.persistence.EntityNotFoundException;
 
-@RestControllerAdvice("com.promotion.amongapi.controller")
+//@RestControllerAdvice("com.promotion.amongapi.controller")
 public class EntityNotFountHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResopnse> handleException(EntityNotFoundException exception) {

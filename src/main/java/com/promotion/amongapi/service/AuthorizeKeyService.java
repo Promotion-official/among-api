@@ -33,7 +33,6 @@ public class AuthorizeKeyService {
         //Get Datas
         //---->Get authorize key
         AuthorizeKey entity = repository.getById(authorizeKey);
-        entity.getAuthorizeKey();
         AuthorizeKeyDto dto = converter.convertEntityToDto(entity);
         //---->Get request limit
         RequestLimitPermission rlp = RequestLimitPermission.of(dto.getPerm());

@@ -1,11 +1,19 @@
 package com.promotion.amongapi.domain.converter;
 
+import com.promotion.amongapi.advice.ErrorResopnse;
+import com.promotion.amongapi.advice.ErrorStatus;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.dto.AuthorizeKeyDto;
 import com.promotion.amongapi.domain.entity.AuthorizeKey;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@Component
+import javax.persistence.EntityNotFoundException;
+
+@Component @Slf4j
 public class AuthorizeKeyConverter implements DtoConverter<AuthorizeKey, AuthorizeKeyDto> {
     @Override
     public AuthorizeKey convertDtoToEntity(AuthorizeKeyDto dto) {
@@ -14,9 +22,14 @@ public class AuthorizeKeyConverter implements DtoConverter<AuthorizeKey, Authori
 
     @Override
     public AuthorizeKeyDto convertEntityToDto(AuthorizeKey entity) {
-        return AuthorizeKeyDto.builder()
-                .authorizeKey(entity.getAuthorizeKey())
-                .perm(Permission.of(entity.getPermission()))
-                .build();
+        try {
+            return AuthorizeKeyDto.builder()
+                    .authorizeKey(entity.getAuthorizeKey())
+                    .perm(Permission.of(entity.getPermission()))
+                    .build();
+        } catch (EntityNotFoundException e) {
+            log.info(e.getClass().getSimpleName() + " throwing!\n" + e.getMessage());
+            throw e;
+        }
     }
 }

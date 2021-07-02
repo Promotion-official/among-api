@@ -14,15 +14,15 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class AccountDtoConverterTest {
-    private static AccountDtoConverter converter;
+public class AccountConverterTest {
+    private static AccountConverter converter;
     private static AccountDto dto;
     private static Account entity;
 
 
     @BeforeAll
     public static void init() {
-        converter = new AccountDtoConverter();
+        converter = new AccountConverter();
     }
 
     @BeforeEach

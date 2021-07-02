@@ -5,7 +5,7 @@ import com.promotion.amongapi.domain.entity.Account;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AccountDtoConverter implements DtoConverter<Account, AccountDto> {
+public class AccountConverter implements DtoConverter<Account, AccountDto> {
     @Override
     public Account convertDtoToEntity(AccountDto dto) {
         return new Account(

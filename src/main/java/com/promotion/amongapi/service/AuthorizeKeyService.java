@@ -1,6 +1,6 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.advice.exception.PermissionnotMatchException;
+import com.promotion.amongapi.advice.exception.PermissionNotMatchException;
 import com.promotion.amongapi.advice.exception.RequestLimitExceededException;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.converter.AuthorizeKeyConverter;
@@ -72,7 +72,7 @@ public class AuthorizeKeyService {
             });
 
             RequestLimitPermission result = resultReference.get();
-            if(result == null) throw new PermissionnotMatchException();
+            if(result == null) throw new PermissionNotMatchException();
             return result;
         }
     }

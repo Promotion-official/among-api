@@ -1,9 +1,7 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.advice.exception.AuthorizeKeyNotFoundException;
 import com.promotion.amongapi.advice.exception.PermissionnotMatchException;
 import com.promotion.amongapi.advice.exception.RequestLimitExceededException;
-import com.promotion.amongapi.advice.exception.WrongPermissionIdxException;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.converter.AuthorizeKeyConverter;
 import com.promotion.amongapi.domain.dto.AuthorizeKeyDto;
@@ -15,7 +13,6 @@ import lombok.ToString;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,13 +1,10 @@
 package com.promotion.amongapi.advice.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-import javax.persistence.EntityNotFoundException;
-
-@NoArgsConstructor
+@AllArgsConstructor
 public class AuthorizeKeyNotFoundException extends RuntimeException {
-    public AuthorizeKeyNotFoundException(EntityNotFoundException e) {
-        super(e);
-    }
+    @Getter
+    String authorizeKey;
 }

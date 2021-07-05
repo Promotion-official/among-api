@@ -7,7 +7,7 @@ import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
 import com.promotion.amongapi.domain.converter.AccountConverter;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +92,7 @@ public class AccountService {
         return count.get();
     }
 
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     private enum TranslateArray {
         GEN(0), GRADE(1), CLAZZ(2), NUMBER(3);
 

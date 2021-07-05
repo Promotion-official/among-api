@@ -1,13 +1,13 @@
 package com.promotion.amongapi.scheduler;
 
 import com.promotion.amongapi.service.AuthorizeKeyService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class RequestLimitScheduler {
     private final AuthorizeKeyService service;

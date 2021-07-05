@@ -2,13 +2,13 @@ package com.promotion.amongapi.configuration;
 
 import com.promotion.amongapi.intercepter.AuthorizeKeyInterceptor;
 import com.promotion.amongapi.service.AuthorizeKeyService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MvcConfiguration implements WebMvcConfigurer {
     private final AuthorizeKeyService service;
     @Override

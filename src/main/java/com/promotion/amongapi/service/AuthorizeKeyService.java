@@ -7,8 +7,8 @@ import com.promotion.amongapi.domain.converter.AuthorizeKeyConverter;
 import com.promotion.amongapi.domain.dto.AuthorizeKeyDto;
 import com.promotion.amongapi.domain.entity.AuthorizeKey;
 import com.promotion.amongapi.repository.AuthorizeKeyRepository;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class AuthorizeKeyService {
     private final AuthorizeKeyRepository repository;
@@ -51,7 +51,7 @@ public class AuthorizeKeyService {
     }
 
     @ToString
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     protected enum RequestLimitPermission {
         DEVELOPER(Permission.DEVELOPER, 10),
         PRODUCT(Permission.PRODUCT, 20),

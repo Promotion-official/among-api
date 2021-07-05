@@ -1,12 +1,12 @@
 package com.promotion.amongapi.advice;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @EqualsAndHashCode
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ErrorResopnse {
     private final String message;
     private final ErrorStatus status;

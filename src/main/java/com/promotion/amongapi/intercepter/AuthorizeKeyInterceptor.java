@@ -1,7 +1,7 @@
 package com.promotion.amongapi.intercepter;
 
 import com.promotion.amongapi.service.AuthorizeKeyService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorizeKeyInterceptor implements HandlerInterceptor {
     private final AuthorizeKeyService service;
 

@@ -2,10 +2,10 @@ package com.promotion.amongapi.controller;
 
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.service.AccountService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 public class CountController {
     AccountService service;

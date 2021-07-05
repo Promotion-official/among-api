@@ -1,6 +1,6 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.advice.exception.PermissionnotMatchException;
+import com.promotion.amongapi.advice.exception.PermissionNotMatchException;
 import com.promotion.amongapi.advice.exception.RequestLimitExceededException;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.converter.AuthorizeKeyConverter;
@@ -9,7 +9,6 @@ import com.promotion.amongapi.domain.entity.AuthorizeKey;
 import com.promotion.amongapi.repository.AuthorizeKeyRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +66,7 @@ public class AuthorizeKeyService {
             });
 
             RequestLimitPermission result = resultReference.get();
-            if(result == null) throw new PermissionnotMatchException();
+            if(result == null) throw new PermissionNotMatchException();
             return result;
         }
     }

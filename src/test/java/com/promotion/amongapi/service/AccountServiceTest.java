@@ -1,6 +1,6 @@
 package com.promotion.amongapi.service;
 
-import com.promotion.amongapi.domain.converter.AccountDtoConverter;
+import com.promotion.amongapi.domain.converter.AccountConverter;
 import com.promotion.amongapi.domain.dto.AccountDto;
 import com.promotion.amongapi.domain.entity.Account;
 import com.promotion.amongapi.advice.exception.UnknownStrategyException;
@@ -32,7 +32,7 @@ public class AccountServiceTest {
     private static AccountService service;
     private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
-    private static AccountDtoConverter converter;
+    private static AccountConverter converter;
 
     @BeforeAll
     public static void init() {
@@ -40,7 +40,7 @@ public class AccountServiceTest {
 
         repository = mock(AccountRepository.class);
         service = new AccountService(repository);
-        converter = new AccountDtoConverter();
+        converter = new AccountConverter();
         testDtos = new ArrayList<>();
         loremIpsum = LoremIpsum.getInstance();
 

@@ -1,15 +1,14 @@
 package com.promotion.amongapi.controller;
 
-import com.promotion.amongapi.advice.ErrorResopnse;
 import com.promotion.amongapi.domain.dto.AccountDto;
 import com.promotion.amongapi.service.AccountService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController()
 @RequestMapping("/account")
 @Slf4j

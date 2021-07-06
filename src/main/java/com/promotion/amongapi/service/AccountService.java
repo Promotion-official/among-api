@@ -6,8 +6,8 @@ import com.promotion.amongapi.advice.exception.UnknownStrategyException;
 import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
-import com.promotion.amongapi.domain.converter.AccountDtoConverter;
-import lombok.AllArgsConstructor;
+import com.promotion.amongapi.domain.converter.AccountConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class AccountService {
     private final AccountRepository repository;
-    private final AccountDtoConverter converter;
+    private final AccountConverter converter;
 
     public AccountService(AccountRepository repository) {
         this.repository = repository;
-        converter = new AccountDtoConverter();
+        converter = new AccountConverter();
     }
 
     public void add(AccountDto account) {
@@ -92,7 +92,7 @@ public class AccountService {
         return count.get();
     }
 
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     private enum TranslateArray {
         GEN(0), GRADE(1), CLAZZ(2), NUMBER(3);
 

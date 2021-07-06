@@ -1,12 +1,12 @@
 package com.promotion.amongapi.advice;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum ErrorStatus {
     ENTITY_NOT_FOUND(4000),
     AUTHORIZE_KEY_NOT_FOUND(4001),

@@ -10,8 +10,11 @@ import com.promotion.amongapi.repository.AccountRepository;
 import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 public class AccountServiceTest {
     private static AccountRepository repository;
+    private static PasswordEncoder encoder = new BCryptPasswordEncoder();
     private static AccountService service;
     private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
@@ -38,12 +42,17 @@ public class AccountServiceTest {
     @BeforeAll
     public static void init() {
         repository = mock(AccountRepository.class);
-        service = new AccountService(repository);
+        encoder = new BCryptPasswordEncoder();
+        service = new AccountService(repository, encoder);
         converter = new AccountConverter();
         loremIpsum = LoremIpsum.getInstance();
         random = new Random();
+    }
 
+    @BeforeEach
+    public void initTestData() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR); //to calculate max generation
+
         testDtos = Stream.generate(() -> AccountDto.builder()
                 .name(loremIpsum.getName())
                 .email(loremIpsum.getEmail())
@@ -58,10 +67,14 @@ public class AccountServiceTest {
     public void testAdd() {
         //Setting test environment
         int idxOfAddDto = random.nextInt(10);
+        AccountDto testDto = testDtos.get(idxOfAddDto);
         service.add(testDtos.get(idxOfAddDto));
 
+        String password = testDtos.get(idxOfAddDto).getPassword();
+        String encodePassword = encoder.encode(password);
+
         //Check AccountService delegated the addAccount logic to AccountRepository
-        verify(repository, times(1)).save(converter.convertDtoToEntity(testDtos.get(idxOfAddDto)));
+        verify(repository, times(1)).save(any()); //TODO 이이외의 방법 탐색해보기 (salt 때문, mock 을 활용해서
 
         //Logging test
         log.info("AccountServiceTest - testAdd");
@@ -76,7 +89,7 @@ public class AccountServiceTest {
         when(repository.exists(any())).thenReturn(true);
 
         //Check AccountService delegated the addAccount logic to AccountRepository
-        verify(repository, times(1)).save(converter.convertDtoToEntity(testDtos.get(idxOfAddDto)));
+        verify(repository, times(1)).save(any()); //TODO 이이외의 방법 탐색해보기 (salt 때문, mock 을 활용해서
 
         //Logging test
         log.info("AccountServiceTest - testAddFailure");

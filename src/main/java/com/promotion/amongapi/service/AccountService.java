@@ -9,6 +9,7 @@ import com.promotion.amongapi.repository.AccountRepository;
 import com.promotion.amongapi.domain.converter.AccountConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Max;
@@ -19,15 +20,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class AccountService {
     private final AccountRepository repository;
+    private final PasswordEncoder encoder;
     private final AccountConverter converter;
 
-    public AccountService(AccountRepository repository) {
+    public AccountService(AccountRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
+        this.encoder= encoder;
         converter = new AccountConverter();
     }
 
     public void add(AccountDto account) {
-        repository.save(converter.convertDtoToEntity(account));
+        String password = account.getPassword();
+        AccountDto expectedResult = AccountDto.builder()
+                .name(account.getName())
+                .email(account.getEmail())
+                .password(encoder.encode(password))
+                .generation(account.getGeneration())
+                .clazz(account.getClazz())
+                .number(account.getNumber())
+                .build();
+
+        repository.save(converter.convertDtoToEntity(expectedResult));
     }
 
     public AccountDto get(String email) {

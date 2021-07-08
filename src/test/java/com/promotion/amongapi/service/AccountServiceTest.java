@@ -89,7 +89,7 @@ public class AccountServiceTest {
         when(repository.exists(any())).thenReturn(true);
 
         //Check AccountService delegated the addAccount logic to AccountRepository
-        verify(repository, times(1)).save(any()); //TODO 이이외의 방법 탐색해보기 (salt 때문, mock 을 활용해서
+        verify(repository).save(any()); //TODO 이이외의 방법 탐색해보기 (salt 때문, mock 을 활용해서
 
         //Logging test
         log.info("AccountServiceTest - testAddFailure");

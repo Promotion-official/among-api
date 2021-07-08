@@ -51,17 +51,7 @@ public class AccountService {
         repository.save(converter.convertDtoToEntity(dto));
     }
 
-    private int[] translateStudentIdToAccountDto(@Max(9999) int studentId) {
-        Calendar cal = Calendar.getInstance();
-        int currentYear = cal.get(Calendar.YEAR);
-        int grade = studentId / 1000;
-        int gen = currentYear - 2015 - grade;
-        int clazz = (studentId % 1000) / 100;
-        int number = studentId % 100;
-
-        return new int[]{gen, grade, clazz, number};
-    }
-
+    //조건에 따라 학생 수 카운트
     public int count(AccountCountStrategy strategy, Object condition) {
         AtomicInteger count = new AtomicInteger();
         Optional.ofNullable(strategy).ifPresentOrElse((countStrategy)->{
@@ -90,6 +80,18 @@ public class AccountService {
             throw new UnknownStrategyException();
         });
         return count.get();
+    }
+
+    //학번으로 계정 가져오기
+    private int[] translateStudentIdToAccountDto(@Max(9999) int studentId) {
+        Calendar cal = Calendar.getInstance();
+        int currentYear = cal.get(Calendar.YEAR);
+        int grade = studentId / 1000;
+        int gen = currentYear - 2015 - grade;
+        int clazz = (studentId % 1000) / 100;
+        int number = studentId % 100;
+
+        return new int[]{gen, grade, clazz, number};
     }
 
     @RequiredArgsConstructor

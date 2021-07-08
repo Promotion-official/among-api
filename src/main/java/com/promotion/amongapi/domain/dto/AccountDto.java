@@ -16,6 +16,8 @@ import javax.validation.constraints.NotBlank;
 public class AccountDto {
     @NotBlank
     private final String email;
+    @NotBlank
+    private final String password;
     private String name;
     private int clazz;
     private int number;

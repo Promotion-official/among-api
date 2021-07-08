@@ -33,21 +33,21 @@ public class AccountServiceTest {
     private static List<AccountDto> testDtos;
     private static LoremIpsum loremIpsum;
     private static AccountConverter converter;
+    private static Random random;
 
     @BeforeAll
     public static void init() {
-        Random random = new Random();
-
         repository = mock(AccountRepository.class);
         service = new AccountService(repository);
         converter = new AccountConverter();
-        testDtos = new ArrayList<>();
         loremIpsum = LoremIpsum.getInstance();
+        random = new Random();
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR); //to calculate max generation
         testDtos = Stream.generate(() -> AccountDto.builder()
                 .name(loremIpsum.getName())
                 .email(loremIpsum.getEmail())
+                .password(loremIpsum.getWords(1))
                 .generation(random.nextInt(currentYear - 2016))
                 .clazz(random.nextInt(4))
                 .number(random.nextInt(20))
@@ -57,7 +57,7 @@ public class AccountServiceTest {
     @Test
     public void testAdd() {
         //Setting test environment
-        int idxOfAddDto = new Random().nextInt(10);
+        int idxOfAddDto = random.nextInt(10);
         service.add(testDtos.get(idxOfAddDto));
 
         //Check AccountService delegated the addAccount logic to AccountRepository
@@ -71,7 +71,7 @@ public class AccountServiceTest {
     @Test
     public void testAddFailure() {
         //Setting test environment
-        int idxOfAddDto = new Random().nextInt(10);
+        int idxOfAddDto = random.nextInt(10);
         service.add(testDtos.get(idxOfAddDto));
         when(repository.exists(any())).thenReturn(true);
 
@@ -86,7 +86,7 @@ public class AccountServiceTest {
     @Test
     public void testGet() {
         //Setting test environment
-        int idxOfGetDto = new Random().nextInt(10);
+        int idxOfGetDto = random.nextInt(10);
         Account getEntity = converter.convertDtoToEntity(testDtos.get(idxOfGetDto));
         String email = getEntity.getEmail();
         when(repository.getById(anyString())).thenReturn(getEntity);
@@ -115,7 +115,7 @@ public class AccountServiceTest {
         int returnValue;
 
         //Check count by name
-        returnValue = new Random().nextInt(100);
+        returnValue = random.nextInt(100);
         when(repository.countByName(name)).thenReturn(returnValue);
         int nameCount = service.count(AccountCountStrategy.NAME, name);
 
@@ -126,18 +126,19 @@ public class AccountServiceTest {
         log.info("expected return Value : " + returnValue);
         log.info("real return Value : " + nameCount);
         //Check count by generation
-        returnValue = new Random().nextInt(100);
+        returnValue = random.nextInt(100);
         when(repository.countByGeneration(generation)).thenReturn(returnValue);
         int genCount = service.count(AccountCountStrategy.GENERATION, generation);
 
         assertEquals(genCount, returnValue);
         verify(repository, atLeastOnce()).countByGeneration(generation);
 
+
         log.info("test countByGeneration");
         log.info("expected return Value : " + returnValue);
         log.info("real return Value : " + genCount);
         //Check count by grade
-        returnValue = new Random().nextInt(100);
+        returnValue = random.nextInt(100);
         when(repository.countByGeneration(currentYear - 2015 - grade)).thenReturn(returnValue);
         int gradeCount = service.count(AccountCountStrategy.GRADE, grade);
 
@@ -148,7 +149,7 @@ public class AccountServiceTest {
         log.info("expected return Value : " + returnValue);
         log.info("real return Value : " + gradeCount);
         //Check count by clazz
-        returnValue = new Random().nextInt(100);
+        returnValue = random.nextInt(100);
         when(repository.countByClazz(clazz)).thenReturn(returnValue);
         int clazzCount = service.count(AccountCountStrategy.CLAZZ, clazz);
 
@@ -177,7 +178,7 @@ public class AccountServiceTest {
     public void testUpdateStudentId() {
         //Setting test environment
         int studentId = 2218;
-        int idxOfGetDto = new Random().nextInt(10);
+        int idxOfGetDto = random.nextInt(10);
         Account testDto = converter.convertDtoToEntity(testDtos.get(idxOfGetDto));
         when(repository.getById(testDto.getEmail())).thenReturn(testDto);
 
@@ -191,8 +192,12 @@ public class AccountServiceTest {
         int number = studentId % 100;
         //수동구현한 학번 예상값을 통하여 반환 예상값을 구한다
         AccountDto expectedResultDto = AccountDto.builder()
-                .name(testDto.getName()).email(testDto.getEmail())
-                .generation(gen).clazz(clazz).number(number)
+                .name(testDto.getName())
+                .email(testDto.getEmail())
+                .password(testDto.getPassword())
+                .generation(gen)
+                .clazz(clazz)
+                .number(number)
                 .build();
         String email = testDto.getEmail();
 

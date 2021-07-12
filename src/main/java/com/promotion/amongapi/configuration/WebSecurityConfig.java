@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
-                cors().disable() //unactive cors
+                cors().and() //active cors
                 .csrf().disable() //unactive csrf
                 .formLogin().disable() //unactive basic login page
                 .headers().frameOptions().disable(); //unactive frame options

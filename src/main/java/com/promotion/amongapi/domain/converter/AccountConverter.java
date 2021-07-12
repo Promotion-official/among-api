@@ -10,16 +10,19 @@ public class AccountConverter implements DtoConverter<Account, AccountDto> {
     public Account convertDtoToEntity(AccountDto dto) {
         return new Account(
                 dto.getEmail(),
+                dto.getPassword(),
                 dto.getName(),
                 dto.getGeneration(),
                 dto.getClazz(),
-                dto.getNumber());
+                dto.getNumber()
+        );
     }
 
     @Override
     public AccountDto convertEntityToDto(Account entity) {
         return AccountDto.builder()
                 .email(entity.getEmail())
+                .password(entity.getPassword())
                 .name(entity.getName())
                 .generation(entity.getGeneration())
                 .clazz(entity.getClazz())

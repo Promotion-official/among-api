@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class CountController {
-    AccountService service;
+    private final AccountService service;
 
     public int countName(String name) {
         return service.count(AccountCountStrategy.NAME, name);

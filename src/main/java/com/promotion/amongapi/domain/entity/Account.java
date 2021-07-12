@@ -17,6 +17,8 @@ import javax.validation.constraints.Max;
 public class Account {
     @Id @Length(max = 50)
     private String email;
+    @Length(max = 64)
+    private String password;
     @Length(max = 5)
     private String name;
     @Max(100)

@@ -9,6 +9,7 @@ import com.promotion.amongapi.repository.AccountRepository;
 import com.promotion.amongapi.domain.converter.AccountConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Max;
@@ -19,15 +20,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class AccountService {
     private final AccountRepository repository;
+    private final PasswordEncoder encoder;
     private final AccountConverter converter;
 
-    public AccountService(AccountRepository repository) {
+    public AccountService(AccountRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
+        this.encoder= encoder;
         converter = new AccountConverter();
     }
 
     public void add(AccountDto account) {
-        repository.save(converter.convertDtoToEntity(account));
+        String password = account.getPassword();
+        AccountDto expectedResult = AccountDto.builder()
+                .name(account.getName())
+                .email(account.getEmail())
+                .password(encoder.encode(password))
+                .generation(account.getGeneration())
+                .clazz(account.getClazz())
+                .number(account.getNumber())
+                .build();
+
+        repository.save(converter.convertDtoToEntity(expectedResult));
     }
 
     public AccountDto get(String email) {
@@ -51,17 +64,7 @@ public class AccountService {
         repository.save(converter.convertDtoToEntity(dto));
     }
 
-    private int[] translateStudentIdToAccountDto(@Max(9999) int studentId) {
-        Calendar cal = Calendar.getInstance();
-        int currentYear = cal.get(Calendar.YEAR);
-        int grade = studentId / 1000;
-        int gen = currentYear - 2015 - grade;
-        int clazz = (studentId % 1000) / 100;
-        int number = studentId % 100;
-
-        return new int[]{gen, grade, clazz, number};
-    }
-
+    //조건에 따라 학생 수 카운트
     public int count(AccountCountStrategy strategy, Object condition) {
         AtomicInteger count = new AtomicInteger();
         Optional.ofNullable(strategy).ifPresentOrElse((countStrategy)->{
@@ -90,6 +93,18 @@ public class AccountService {
             throw new UnknownStrategyException();
         });
         return count.get();
+    }
+
+    //학번으로 계정 가져오기
+    private int[] translateStudentIdToAccountDto(@Max(9999) int studentId) {
+        Calendar cal = Calendar.getInstance();
+        int currentYear = cal.get(Calendar.YEAR);
+        int grade = studentId / 1000;
+        int gen = currentYear - 2015 - grade;
+        int clazz = (studentId % 1000) / 100;
+        int number = studentId % 100;
+
+        return new int[]{gen, grade, clazz, number};
     }
 
     @RequiredArgsConstructor

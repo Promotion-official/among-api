@@ -34,12 +34,14 @@ public class AccountConverterTest {
         dto = AccountDto.builder()
                 .name(lorem.getName())
                 .email(lorem.getEmail())
+                .password(lorem.getWords(1))
                 .generation(random.nextInt(maxGeneration) + 1)
                 .clazz(random.nextInt(4) + 1)
                 .build();
 
         entity = new Account(
                 dto.getEmail(),
+                dto.getPassword(),
                 dto.getName(),
                 dto.getGeneration(),
                 dto.getClazz(),

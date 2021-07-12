@@ -9,4 +9,5 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     int countByName(String name);
     int countByGeneration(int generation);
     int countByClazz(int clazz);
+
 }

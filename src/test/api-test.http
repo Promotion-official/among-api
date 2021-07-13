@@ -25,3 +25,16 @@ Content-Type: application/json
 {
   "email" : "#unknownmail@gmail.com"
 }
+
+###
+POST http://localhost:8081/account/add-account?authorize_key=asda
+Content-Type: application/json
+
+{
+  "email" : "#unknownmail@gmail.com",
+  "password" : "1234@",
+  "name" : "지인호",
+  "clazz" : "2",
+  "number" : "18",
+  "generation" : "2"
+}

@@ -1,10 +1,10 @@
 package com.promotion.amongapi.service;
-
+import com.promotion.amongapi.advice.exception.EntityAlreadyExistException;
+import com.promotion.amongapi.advice.exception.UnknownStrategyException;
+import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.domain.converter.AccountConverter;
 import com.promotion.amongapi.domain.dto.AccountDto;
 import com.promotion.amongapi.domain.entity.Account;
-import com.promotion.amongapi.advice.exception.UnknownStrategyException;
-import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
 import com.thedeanda.lorem.LoremIpsum;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +25,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @Slf4j
@@ -68,10 +69,7 @@ public class AccountServiceTest {
         //Setting test environment
         int idxOfAddDto = random.nextInt(10);
         AccountDto testDto = testDtos.get(idxOfAddDto);
-        service.add(testDtos.get(idxOfAddDto));
-
-        String password = testDtos.get(idxOfAddDto).getPassword();
-        String encodePassword = encoder.encode(password);
+        service.add(testDto);
 
         //Check AccountService delegated the addAccount logic to AccountRepository
         verify(repository, times(1)).save(any()); //TODO 이이외의 방법 탐색해보기 (salt 때문, mock 을 활용해서
@@ -81,20 +79,16 @@ public class AccountServiceTest {
         log.info("added user : " + testDtos.get(idxOfAddDto));
     }
 
-    @Test
+    @Test //이미 Account 가 존재할 경우
     public void testAddFailure() {
         //Setting test environment
-        int idxOfAddDto = random.nextInt(10);
-        service.add(testDtos.get(idxOfAddDto));
-        when(repository.exists(any())).thenReturn(true);
+        int idxOfAddDto = random.nextInt(9);
+        AccountDto testDto = testDtos.get(idxOfAddDto);
+        when(repository.existsById(anyString())).thenReturn(true);
 
-        //Check AccountService delegated the addAccount logic to AccountRepository
-        verify(repository).save(any()); //TODO 이이외의 방법 탐색해보기 (salt 때문, mock 을 활용해서
-
-        //Logging test
-        log.info("AccountServiceTest - testAddFailure");
-        log.info("added user : " + testDtos.get(idxOfAddDto));
+        assertThrows(EntityAlreadyExistException.class, () -> service.add(testDto));
     }
+
 
     @Test
     public void testGet() {

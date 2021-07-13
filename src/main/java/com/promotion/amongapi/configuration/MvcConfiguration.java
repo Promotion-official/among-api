@@ -1,6 +1,7 @@
 package com.promotion.amongapi.configuration;
 
-import com.promotion.amongapi.intercepter.AuthorizeKeyInterceptor;
+import com.promotion.amongapi.interceptor.AuthorizeKeyInterceptor;
+import com.promotion.amongapi.interceptor.VerifyInterceptor;
 import com.promotion.amongapi.service.AuthorizeKeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthorizeKeyInterceptor(service))
+                .excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**");
+        registry.addInterceptor(new VerifyInterceptor(service))
                 .excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**");
     }
 }

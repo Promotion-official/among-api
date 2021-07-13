@@ -2,6 +2,7 @@ package com.promotion.amongapi.domain.converter;
 
 import com.promotion.amongapi.advice.ErrorResopnse;
 import com.promotion.amongapi.advice.ErrorStatus;
+import com.promotion.amongapi.advice.exception.AuthorizeKeyNotFoundException;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.dto.AuthorizeKeyDto;
 import com.promotion.amongapi.domain.entity.AuthorizeKey;
@@ -22,14 +23,9 @@ public class AuthorizeKeyConverter implements DtoConverter<AuthorizeKey, Authori
 
     @Override
     public AuthorizeKeyDto convertEntityToDto(AuthorizeKey entity) {
-        try {
-            return AuthorizeKeyDto.builder()
-                    .authorizeKey(entity.getAuthorizeKey())
-                    .perm(Permission.of(entity.getPermission()))
-                    .build();
-        } catch (EntityNotFoundException e) {
-            log.info(e.getClass().getSimpleName() + " throwing!\n" + e.getMessage());
-            throw e;
-        }
+        return AuthorizeKeyDto.builder()
+                .authorizeKey(entity.getAuthorizeKey())
+                .perm(Permission.of(entity.getPermission()))
+                .build();
     }
 }

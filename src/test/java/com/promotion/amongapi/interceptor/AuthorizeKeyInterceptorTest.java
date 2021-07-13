@@ -1,4 +1,4 @@
-package com.promotion.amongapi.intercepter;
+package com.promotion.amongapi.interceptor;
 
 import com.promotion.amongapi.service.AuthorizeKeyService;
 import com.thedeanda.lorem.LoremIpsum;

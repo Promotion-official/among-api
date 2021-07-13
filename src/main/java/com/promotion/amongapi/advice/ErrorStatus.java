@@ -14,7 +14,8 @@ public enum ErrorStatus {
     REQUEST_LIMIT_EXCEEDED(4003),
     UNKNOWN_STRATEGY(4004),
     WRONG_CONDITION_TYPE(4005),
-    WRONG_PERMISSION(4006);
+    WRONG_PERMISSION(4006),
+    ENTITY_ALREADY_EXIST(4007);
 
     @Getter
     private final int code;

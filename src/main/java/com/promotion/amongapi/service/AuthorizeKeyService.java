@@ -50,6 +50,11 @@ public class AuthorizeKeyService {
         requestStatus.clear();
     }
 
+    @Transactional
+    public AuthorizeKeyDto getKey(String authorizeKey) {
+        return converter.convertEntityToDto(repository.getById(authorizeKey));
+    }
+
     @ToString
     @RequiredArgsConstructor
     protected enum RequestLimitPermission {

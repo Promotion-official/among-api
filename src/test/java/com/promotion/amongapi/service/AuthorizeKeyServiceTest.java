@@ -32,6 +32,20 @@ public class AuthorizeKeyServiceTest {
     }
 
     @Test
+    public void testGetKey() {
+        //Logging test start
+        log.info("AuthorizeKeyServiceTest - testGetKey");
+
+        //Prepare test environment
+        String authorizeKey = LoremIpsum.getInstance().getEmail();
+        int permissionId = new Random().nextInt(Permission.values().length);
+
+        when(repository.getById(authorizeKey)).thenReturn(new AuthorizeKey(authorizeKey, permissionId));
+
+        assertEquals(service.getKey(authorizeKey).getPerm(), Permission.of(permissionId));
+    }
+
+    @Test
     public void testCount() {
         //Logging test start
         log.info("AuthorizeKeyServiceTest - testCount");

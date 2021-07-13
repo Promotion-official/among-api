@@ -10,4 +10,10 @@ public enum Permission {
             throw new WrongPermissionIdxException();
         return values()[permission];
     }
+
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }

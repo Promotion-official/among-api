@@ -1,5 +1,6 @@
-package com.promotion.amongapi.intercepter;
+package com.promotion.amongapi.interceptor;
 
+import com.promotion.amongapi.advice.exception.AuthorizeKeyNotFoundException;
 import com.promotion.amongapi.service.AuthorizeKeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -20,10 +21,10 @@ public class AuthorizeKeyInterceptor implements HandlerInterceptor {
         String paramKey = request.getParameter("authorize_key");
         try {
             service.count(paramKey);
-        } catch (EntityNotFoundException | InvalidDataAccessApiUsageException e) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.getWriter().write(e.getMessage());
-            return false;
+        } catch (EntityNotFoundException e) {
+            AuthorizeKeyNotFoundException exception = new AuthorizeKeyNotFoundException(paramKey);
+            exception.initCause(e);
+            throw exception;
         }
         return true;
     }

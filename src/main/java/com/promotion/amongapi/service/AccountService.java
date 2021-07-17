@@ -1,7 +1,6 @@
 package com.promotion.amongapi.service;
 
 import com.promotion.amongapi.advice.exception.AccountAlreadyExistException;
-import com.promotion.amongapi.advice.exception.EntityAlreadyExistException;
 import com.promotion.amongapi.advice.exception.UnknownStrategyException;
 import com.promotion.amongapi.advice.exception.WrongConditionTypeException;
 import com.promotion.amongapi.domain.converter.AccountConverter;
@@ -10,9 +9,9 @@ import com.promotion.amongapi.domain.entity.Account;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Max;
 import java.util.Calendar;
@@ -47,13 +46,9 @@ public class AccountService {
         repository.save(converter.convertDtoToEntity(expectedResult));
     }
 
+    @Transactional
     public AccountDto get(String email) {
-        Account entity = new Account();
-        try {
-            entity = repository.getById(email);
-        } catch (DataAccessException e) {
-            System.out.println("테스트 성공 : " + e.getMessage());
-        }
+        Account entity = repository.getById(email);
         return converter.convertEntityToDto(entity);
     }
 

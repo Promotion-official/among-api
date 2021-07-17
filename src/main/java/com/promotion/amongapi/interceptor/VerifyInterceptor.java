@@ -23,7 +23,6 @@ public class VerifyInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws PermissionDeniedPageAccessException {
         HandlerMethod method = (HandlerMethod) handler;
         String authorizeKey = request.getParameter("authorize_key");
-        log.info("authorize key : " + authorizeKey);
 
         boolean hasAnnotation = checkAnnotation(method, Verify.class);
         if(hasAnnotation) {
@@ -31,8 +30,6 @@ public class VerifyInterceptor implements HandlerInterceptor {
 
             Permission[] usablePermissions = verify.perm(); //사용권한 확인
             Permission requestPermission = service.getKey(authorizeKey).getPerm(); //요청권한 확인
-            log.info("usable permission: " + Arrays.toString(usablePermissions));
-            log.info("request permission: " + requestPermission);
 
             for (Permission usablePermission : usablePermissions) //요청권한과 사용권한 대조를 위한 loop
                 if (usablePermission.equals(requestPermission)) //요청권한이 있을경우

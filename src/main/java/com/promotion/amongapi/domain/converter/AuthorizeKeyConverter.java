@@ -17,7 +17,7 @@ import javax.persistence.EntityNotFoundException;
 public class AuthorizeKeyConverter implements DtoConverter<AuthorizeKey, AuthorizeKeyDto> {
     @Override
     public AuthorizeKey convertDtoToEntity(AuthorizeKeyDto dto) {
-        return new AuthorizeKey(dto.getAuthorizeKey(), dto.getPerm().ordinal());
+        return new AuthorizeKey(dto.getAuthorizeKey(), dto.getPerm().toString());
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AuthorizeKeyConverterTest {
                 .perm(randomPerm)
                 .build();
 
-        entity = new AuthorizeKey(key, randomPerm.ordinal());
+        entity = new AuthorizeKey(key, randomPerm.name());
     }
 
     @Test

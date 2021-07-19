@@ -8,16 +8,16 @@ import javax.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode
 @Getter @Setter
 @ToString
 public class AccountDto {
     @NotBlank
-    private final String email;
+    private String email;
     @NotBlank
-    private final String password;
+    private String password;
     private String name;
     private int clazz;
     private int number;

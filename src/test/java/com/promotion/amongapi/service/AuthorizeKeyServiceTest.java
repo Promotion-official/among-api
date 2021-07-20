@@ -39,10 +39,11 @@ public class AuthorizeKeyServiceTest {
         //Prepare test environment
         String authorizeKey = LoremIpsum.getInstance().getEmail();
         int permissionId = new Random().nextInt(Permission.values().length);
+        Permission perm = Permission.values()[permissionId];
 
-        when(repository.getById(authorizeKey)).thenReturn(new AuthorizeKey(authorizeKey, permissionId));
+        when(repository.getById(authorizeKey)).thenReturn(new AuthorizeKey(authorizeKey, perm.name()));
 
-        assertEquals(service.getKey(authorizeKey).getPerm(), Permission.of(permissionId));
+        assertEquals(service.getKey(authorizeKey).getPerm(), Permission.of(perm.name()));
     }
 
     @Test

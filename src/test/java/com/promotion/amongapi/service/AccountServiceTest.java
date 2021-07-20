@@ -42,9 +42,6 @@ public class AccountServiceTest {
 
     @BeforeAll
     public static void init() {
-        repository = mock(AccountRepository.class);
-        encoder = new BCryptPasswordEncoder();
-        service = new AccountService(repository, encoder);
         converter = new AccountConverter();
         loremIpsum = LoremIpsum.getInstance();
         random = new Random();
@@ -52,6 +49,10 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void initTestData() {
+        repository = mock(AccountRepository.class);
+        encoder = new BCryptPasswordEncoder();
+        service = new AccountService(repository, encoder);
+
         int currentYear = Calendar.getInstance().get(Calendar.YEAR); //to calculate max generation
 
         testDtos = Stream.generate(() -> AccountDto.builder()

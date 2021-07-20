@@ -5,10 +5,12 @@ import com.promotion.amongapi.advice.exception.WrongPermissionIdxException;
 public enum Permission {
     DEVELOPER, PRODUCT, OPERATOR, ADMINISTRATOR;
 
-    public static Permission of(int permission) {
-        if(values().length <= permission)
-            throw new WrongPermissionIdxException();
-        return values()[permission];
+    public static Permission of(String permission) {
+        for (Permission value : values()) {
+            if(permission.equals(value.name()))
+                return value;
+        }
+        throw new WrongPermissionIdxException();
     }
 
 

@@ -54,7 +54,7 @@ public class AuthorizeKeyServiceTest {
         String key = "among_key" + LoremIpsum.getInstance().getWords(3);
         Permission randomPerm = getRandomPermission();
         AuthorizeKeyService.RequestLimitPermission rlp = AuthorizeKeyService.RequestLimitPermission.of(randomPerm);
-        AuthorizeKey authorizeKey = new AuthorizeKey(key, randomPerm.ordinal());
+        AuthorizeKey authorizeKey = new AuthorizeKey(key, randomPerm.name());
 
         int methodLoopTimes = rlp.getMaxRequestLimit() + 1;
         AtomicLong timeOfThrowExceptionWhenLoop = new AtomicLong();

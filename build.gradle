@@ -33,6 +33,13 @@ dependencies {
 
     compileOnly "mysql:mysql-connector-java:8.0.15"
 
+    //jwt 토큰
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+
 
     /*
     개발의 유틸성 향상을 위한 3rd 파티 추가 (lombok, lorem ipsum 등)

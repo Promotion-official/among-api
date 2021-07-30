@@ -8,11 +8,11 @@
 //  "number": 18,
 //  "generation": 4
 //  }
-POST http://localhost:8081/account/get-account?authorize_key=asda
+POST http://localhost:8081/account/get-account?auth_token=asda client _id
 Content-Type: application/json
 
 {
-  "email" : "grassintheglass@gmail.com"
+  "email" : "asda"
 }
 
 ###Standard output upon test success
@@ -27,7 +27,28 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8081/account/add-account?authorize_key=asda
+POST http://localhost:8081/account/add-account?auth_token=asda
+Content-Type: application/json
+
+{
+  "email" : "#unknownmail@gmail.com",
+  "password" : "1234@",
+  "name" : "지인호",
+  "clazz" : "2",
+  "number" : "18",
+  "generation" : "2"
+}
+
+###
+POST http://localhost:8081/account/get-account?auth_token=asda
+Content-Type: application/json
+
+{
+"email" : "UNKNOWN_EMAIL@abc.def"
+}
+
+###
+POST http://localhost:8081/account/add-account?auth_token=asda
 Content-Type: application/json
 
 {

@@ -73,6 +73,16 @@ public class IntegratedExceptionHandler {
                 "이미 등록된 계정입니다! [" + ((AccountDto)exception.getEntity()).getEmail() + "]");
     }
 
+    @ExceptionHandler(AnotherUserTokenException.class)
+    public ResponseEntity<ErrorResopnse> handleException(AnotherUserTokenException exception) {
+        return getErrorResponse(HttpStatus.FORBIDDEN, ErrorStatus.WRONG_TOKEN_DATA, "해당 토큰으로 조회할 수 없는 계정입니다!");
+    }
+
+    @ExceptionHandler(WrongTokenDataException.class)
+    public ResponseEntity<ErrorResopnse> handleException(WrongTokenDataException exception) {
+        return getErrorResponse(HttpStatus.BAD_REQUEST, ErrorStatus.WRONG_TOKEN_DATA, "잘못된 jwt 토큰 입니다!");
+    }
+
     private ResponseEntity<ErrorResopnse> getErrorResponse(HttpStatus httpStatus, ErrorStatus errStatus, String errMsg) {
         return ResponseEntity
                 .status(httpStatus)

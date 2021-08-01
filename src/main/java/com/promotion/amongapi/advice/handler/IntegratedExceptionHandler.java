@@ -83,6 +83,11 @@ public class IntegratedExceptionHandler {
         return getErrorResponse(HttpStatus.BAD_REQUEST, ErrorStatus.WRONG_TOKEN_DATA, "잘못된 jwt 토큰 입니다!");
     }
 
+    @ExceptionHandler(TokenAlreadyExistException.class)
+    public ResponseEntity<ErrorResopnse> handleException(TokenAlreadyExistException exception) {
+        return getErrorResponse(HttpStatus.BAD_REQUEST, ErrorStatus.ENTITY_ALREADY_EXIST, "이미 존재하는 토큰 입니다!");
+    }
+
     private ResponseEntity<ErrorResopnse> getErrorResponse(HttpStatus httpStatus, ErrorStatus errStatus, String errMsg) {
         return ResponseEntity
                 .status(httpStatus)

@@ -1,6 +1,7 @@
 package com.promotion.amongapi.controller;
 
 import com.promotion.amongapi.domain.dto.AccountDto;
+import com.promotion.amongapi.jwt.JwtProvider;
 import com.promotion.amongapi.service.AccountService;
 import com.thedeanda.lorem.LoremIpsum;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class AccountControllerTest {
     @BeforeAll
     public static void init() { //init test objects
         service = mock(AccountService.class);
-        accountController = new AccountController(service);
+        accountController = new AccountController(service, mock(JwtProvider.class));
 
         lorem = LoremIpsum.getInstance();
         random = new Random();
@@ -55,7 +56,7 @@ public class AccountControllerTest {
         when(service.get(requestDto.getEmail())).thenReturn(requestDto);
 
         //---->Get response data
-        AccountDto responseDto = accountController.getAccount(requestDto).getBody();
+        AccountDto responseDto = accountController.getAccount(requestDto, "").getBody();
 
         //Logging test
         log.info("AccountControllerTest - testGetAccount");
@@ -83,7 +84,8 @@ public class AccountControllerTest {
 
         //---->Get response data
         AtomicReference<AccountDto> responseDto = new AtomicReference<>();
-        assertThrows(EntityNotFoundException.class, () ->responseDto.set(accountController.getAccount(requestDto).getBody()));
+        assertThrows(EntityNotFoundException.class, () ->
+                responseDto.set(accountController.getAccount(requestDto, "").getBody()));
 
         //Logging test
         log.info("AccountControllerTest - testGetAccount");

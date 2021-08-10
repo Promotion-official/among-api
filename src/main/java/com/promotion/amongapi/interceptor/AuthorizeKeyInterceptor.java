@@ -19,7 +19,7 @@ public class AuthorizeKeyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws IOException {
-        String paramKey = request.getParameter("authorize_key");
+        String paramKey = request.getParameter("auth_token");
         if(paramKey == null) throw new AuthorizeKeyNotFoundException(null);
         try {
             service.count(paramKey);

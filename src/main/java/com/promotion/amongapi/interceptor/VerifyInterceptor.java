@@ -22,7 +22,7 @@ public class VerifyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws PermissionDeniedPageAccessException {
         HandlerMethod method = (HandlerMethod) handler;
-        String authorizeKey = request.getParameter("authorize_key");
+        String authorizeKey = request.getParameter("auth_token");
 
         boolean hasAnnotation = checkAnnotation(method, Verify.class);
         if(hasAnnotation) {

@@ -8,10 +8,10 @@ import javax.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
-@Getter @Setter
+@Getter
 @ToString
 public class AccountDto {
     @NotBlank

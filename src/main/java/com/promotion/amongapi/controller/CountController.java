@@ -3,10 +3,12 @@ package com.promotion.amongapi.controller;
 import com.promotion.amongapi.logic.AccountCountStrategy;
 import com.promotion.amongapi.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/v1/count")
 public class CountController {
     private final AccountService service;
 

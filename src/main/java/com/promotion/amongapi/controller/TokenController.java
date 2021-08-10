@@ -5,13 +5,10 @@ import com.promotion.amongapi.annotation.Verify;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.entity.AuthorizeKey;
 import com.promotion.amongapi.repository.AuthorizeKeyRepository;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController()
@@ -24,11 +21,5 @@ public class TokenController {
     public void addAuthToken(@RequestHeader(value = "AuthToken") String token) {
         if(authorizeKeyRepository.existsById(token)) throw new TokenAlreadyExistException();
         authorizeKeyRepository.save(new AuthorizeKey(token, Permission.PRODUCT.name()));
-    }
-
-    @AllArgsConstructor
-    @Getter
-    static class TargetToken {
-        String targetToken;
     }
 }

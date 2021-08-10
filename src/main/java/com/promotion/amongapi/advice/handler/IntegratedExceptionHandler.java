@@ -78,8 +78,8 @@ public class IntegratedExceptionHandler {
         return getErrorResponse(HttpStatus.FORBIDDEN, ErrorStatus.WRONG_TOKEN_DATA, "해당 토큰으로 조회할 수 없는 계정입니다!");
     }
 
-    @ExceptionHandler(WrongTokenDataException.class)
-    public ResponseEntity<ErrorResopnse> handleException(WrongTokenDataException exception) {
+    @ExceptionHandler(WrongTokenException.class)
+    public ResponseEntity<ErrorResopnse> handleException(WrongTokenException exception) {
         return getErrorResponse(HttpStatus.BAD_REQUEST, ErrorStatus.WRONG_TOKEN_DATA, "잘못된 jwt 토큰 입니다!");
     }
 

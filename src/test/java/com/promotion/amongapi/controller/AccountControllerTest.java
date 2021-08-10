@@ -84,7 +84,8 @@ public class AccountControllerTest {
 
         //---->Get response data
         AtomicReference<AccountDto> responseDto = new AtomicReference<>();
-        assertThrows(EntityNotFoundException.class, () ->responseDto.set(accountController.getAccount(requestDto, "").getBody()));
+        assertThrows(EntityNotFoundException.class, () ->
+                responseDto.set(accountController.getAccount(requestDto, "").getBody()));
 
         //Logging test
         log.info("AccountControllerTest - testGetAccount");

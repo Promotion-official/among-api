@@ -33,7 +33,7 @@ public class JwtProvider {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public DecodedAuthTokenDto encode(String authToken) {
+    public DecodeAuthTokenDto encode(String authToken) {
         if (validateToken(authToken)) {
             Claims claims = Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(authToken).getBody();
             String[] data = authToken.split(" ");

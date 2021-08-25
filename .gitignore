@@ -38,3 +38,4 @@ out/
 
 ### Spring Boot ###
 application.properties
+/src/main/java/com/promotion/amongapi/jwt/JwtProperties.java

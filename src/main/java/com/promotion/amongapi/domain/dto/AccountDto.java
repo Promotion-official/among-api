@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Getter
+@Setter
 @ToString
 public class AccountDto {
     @NotBlank

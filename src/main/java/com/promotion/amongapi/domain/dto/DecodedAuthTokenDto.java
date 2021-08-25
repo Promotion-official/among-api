@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class EncodedAuthTokenDto {
+public class DecodedAuthTokenDto {
     String email;
     String clientId;
 }

@@ -1,7 +1,7 @@
 package com.promotion.amongapi.jwt;
 
 import com.promotion.amongapi.advice.exception.WrongTokenException;
-import com.promotion.amongapi.domain.dto.DecodedAuthTokenDto;
+import com.promotion.amongapi.domain.dto.DecodeAuthTokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -26,6 +26,10 @@ public class JwtProvider {
 
     private SecretKey secretKey;
 
+    private String claimOfEmail;
+
+    private String claimOfClientId;
+
 
     @PostConstruct
     public void init() {
@@ -36,10 +40,9 @@ public class JwtProvider {
     public DecodeAuthTokenDto encode(String authToken) {
         if (validateToken(authToken)) {
             Claims claims = Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(authToken).getBody();
-            String[] data = authToken.split(" ");
-            data[0] = claims.get("email",String.class);
-            data[1] = claims.get("clientId",String.class);
-            return new DecodedAuthTokenDto(data[0],data[1]);
+             claimOfEmail = claims.get("email",String.class);
+             claimOfClientId = claims.get("clientId",String.class);
+            return new DecodeAuthTokenDto(claimOfEmail,claimOfClientId);
         } else throw new WrongTokenException();
 
     }

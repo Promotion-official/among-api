@@ -4,7 +4,7 @@ import com.promotion.amongapi.advice.exception.AnotherUserTokenException;
 import com.promotion.amongapi.annotation.Verify;
 import com.promotion.amongapi.domain.Permission;
 import com.promotion.amongapi.domain.dto.AccountDto;
-import com.promotion.amongapi.domain.dto.DecodedAuthTokenDto;
+import com.promotion.amongapi.domain.dto.DecodeAuthTokenDto;
 import com.promotion.amongapi.jwt.JwtProvider;
 import com.promotion.amongapi.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class AccountController {
     private final JwtProvider jwtProvider;
     @PostMapping("/get-account")
     public ResponseEntity<AccountDto> getAccount(@RequestBody AccountDto account, @RequestParam String auth_token) {
-        DecodedAuthTokenDto dto = jwtProvider.encode(auth_token);
+        DecodeAuthTokenDto dto = jwtProvider.encode(auth_token);
 
         if(dto.getEmail().equals(account.getEmail())) {
             AccountDto result = service.get(account.getEmail());
